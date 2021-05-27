@@ -22,13 +22,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/input")
+@CrossOrigin(origins = "http://localhost:3000")
 public class InputAPI {
     @Autowired
     private InputRepository inputRepository;
 
     @Autowired
     private ModelMapper modelMapper;
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @GetMapping()
     public List<InputDTO> getList() {
         List<Input> inputList = inputRepository.findAll();
@@ -55,18 +56,18 @@ public class InputAPI {
 //
 //    }
 
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public InputDTO saveData(@RequestPart(value= "data") InputDTO inputDTO, @RequestPart("file") MultipartFile file) throws Exception {
-//        Input input = modelMapper.map(inputDTO, Input.class);
+    @PostMapping()
+    public InputDTO saveData(@RequestBody InputDTO inputDTO) throws Exception {
+        Input input = modelMapper.map(inputDTO, Input.class);
 //        String userFolderPath = "C:/Users/Lenovo/IMAGE/";
 //        Path path = Paths.get(userFolderPath);
 //        Path filePath = path.resolve(file.getOriginalFilename());
 //        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 //        input.setFile(file.getOriginalFilename());
-//        input = inputRepository.save(input);
-//        InputDTO inputDTO1 = mapToDTO(input);
-//        return inputDTO1;
-//    }
+        input = inputRepository.save(input);
+        InputDTO inputDTO1 = mapToDTO(input);
+        return inputDTO1;
+    }
 
 
 //    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -96,5 +97,10 @@ public class InputAPI {
         Path paths = Paths.get(pathFile);
         byte[] foto = Files.readAllBytes(paths);
         return foto;
+    }
+
+    @DeleteMapping
+    public void del(){
+        inputRepository.deleteAll();
     }
 }
