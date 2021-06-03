@@ -91,14 +91,15 @@ public class InputAPI {
     }
 
     @GetMapping("/getImage/{id}")
-    public byte[] getImage(@PathVariable Integer id) throws IOException {
+    public String getImage(@PathVariable Integer id) throws IOException {
         Input input = inputRepository.findById(id).get();
         String userFolderPath = "C:/Users/Lenovo/IMAGE/";
 //        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
         String pathFile = userFolderPath + input.getFile();
         Path paths = Paths.get(pathFile);
-        byte[] foto = Files.readAllBytes(paths);
-        return foto;
+        byte[] filePhoto = Files.readAllBytes(paths);
+        String encodedFile = Base64.getEncoder().encodeToString(filePhoto);
+        return encodedFile;
     }
 
     @DeleteMapping
