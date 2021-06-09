@@ -41,41 +41,10 @@ public class InputAPI {
         return inputDTOList;
     }
 
-//    @GetMapping("/{id}")
-//    public MahasiswaDto getMahasiswa(@PathVariable Integer id) {
-//
-//        Mahasiswa mahasiswa = mahasiswaRepository.findById(id).get();
-//
-//        MahasiswaDto mahasiswaDto = new MahasiswaDto();
-//
-//        modelMapper.map(mahasiswa, mahasiswaDto); //   modelMapper.map(asal, tujuan);
-//        modelMapper.map(mahasiswa.getAgama(), mahasiswaDto);
-//        modelMapper.map(mahasiswa.getJurusan(), mahasiswaDto);
-//
-//        mahasiswaDto.setId(mahasiswa.getId());
-//        return mahasiswaDto;
-//
-//    }
-
-//    @PostMapping()
-//    public InputDTO saveData(@RequestBody InputDTO inputDTO) throws Exception {
-//        Input input = modelMapper.map(inputDTO, Input.class);
-////        String userFolderPath = "C:/Users/Lenovo/IMAGE/";
-////        Path path = Paths.get(userFolderPath);
-////        Path filePath = path.resolve(file.getOriginalFilename());
-////        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-////        input.setFile(file.getOriginalFilename());
-//        input = inputRepository.save(input);
-//        InputDTO inputDTO1 = mapToDTO(input);
-//        return inputDTO1;
-//    }
-
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/save")
     public InputDTO saveData(@RequestPart(value="data", required = true) InputDTO inputDTO, @RequestPart(value="file", required = true) MultipartFile file) throws Exception {
         Input input = modelMapper.map(inputDTO, Input.class);
         String userFolderPath = "C:/Users/Lenovo/IMAGE/";
-//        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
         Path path = Paths.get(userFolderPath);
         Path filePath = path.resolve(file.getOriginalFilename());
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -94,7 +63,6 @@ public class InputAPI {
     public String getImage(@PathVariable Integer id) throws IOException {
         Input input = inputRepository.findById(id).get();
         String userFolderPath = "C:/Users/Lenovo/IMAGE/";
-//        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
         String pathFile = userFolderPath + input.getFile();
         Path paths = Paths.get(pathFile);
         byte[] filePhoto = Files.readAllBytes(paths);
